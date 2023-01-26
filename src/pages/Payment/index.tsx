@@ -1,5 +1,6 @@
 import { Bank, CreditCard, MapPin, Money } from 'phosphor-react'
 import { useContext } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { CartContext } from '../../contexts/CartContext'
 import { ItemCart } from './components/CartItem'
 import {
@@ -13,12 +14,19 @@ import {
 } from './styles'
 
 export function Payment() {
-  const { cart, totalOrder, deliveryPrice } = useContext(CartContext)
+  const { cart, totalOrder, deliveryPrice, onFormFullfilled } =
+    useContext(CartContext)
   const total = totalOrder()
   const totalWithDelivery = total + deliveryPrice
+
+  const { register, handleSubmit, control, reset, watch } = useForm()
+
+  function handleAddAddress(data: any) {
+    console.log(data)
+  }
   return (
     <MainContainer>
-      <FormAddressContainer>
+      <FormAddressContainer onSubmit={handleSubmit(handleAddAddress)}>
         <div>
           <h2>Complete seu pedido</h2>
           <DivAddressContainer>
@@ -30,28 +38,40 @@ export function Payment() {
             </h3>
             <p>Informe o endereço onde deseja receber seu pedido</p>
             <DivInput variantWidth="50%">
-              <input type="text" placeholder="CEP" />
+              <input type="text" placeholder="CEP" {...register('cep')} />
             </DivInput>
             <DivInput variantWidth="100%">
-              <input type="text" placeholder="Rua" />
+              <input type="text" placeholder="Rua" {...register('street')} />
             </DivInput>
             <DivRow>
               <DivInput variantWidth="25%">
-                <input type="number" placeholder="Número" />
+                <input
+                  type="number"
+                  placeholder="Número"
+                  {...register('number')}
+                />
               </DivInput>
               <DivInput variantWidth="75%">
-                <input type="text" placeholder="Complemento" />
+                <input
+                  type="text"
+                  placeholder="Complemento"
+                  {...register('complement')}
+                />
               </DivInput>
             </DivRow>
             <DivRow>
               <DivInput variantWidth="25%">
-                <input type="text" placeholder="Bairro" />
+                <input
+                  type="text"
+                  placeholder="Bairro"
+                  {...register('district')}
+                />
               </DivInput>
               <DivInput variantWidth="50%">
-                <input type="text" placeholder="Cidade" />
+                <input type="text" placeholder="Cidade" {...register('city')} />
               </DivInput>
               <DivInput variantWidth="25%">
-                <input type="text" placeholder="UF" />
+                <input type="text" placeholder="UF" {...register('uf')} />
               </DivInput>
             </DivRow>
           </DivAddressContainer>
@@ -60,29 +80,37 @@ export function Payment() {
             <p>
               O pagamento é feito na entrega. Escolha a forma que deseja pagar
             </p>
-            <div>
-              <label htmlFor="credit">
-                <span>
-                  <CreditCard size={16}></CreditCard>
-                </span>
-                cartão de crédito
-                <input type="radio" name="paymentWay" id="credit" />
-              </label>
-              <label htmlFor="debit">
-                <span>
-                  <Bank size={16}></Bank>
-                </span>
-                cartão de débito
-                <input type="radio" name="paymentWay" id="debit" />
-              </label>
-              <label htmlFor="money">
-                <span>
-                  <Money size={16}></Money>
-                </span>
-                dinheiro
-                <input type="radio" name="paymentWay" id="money" />
-              </label>
-            </div>
+            <Controller
+              control={control}
+              {...register('paymentMethod')}
+              render={({ field }) => {
+                return (
+                  <div>
+                    <label htmlFor="credit">
+                      <span>
+                        <CreditCard size={16}></CreditCard>
+                      </span>
+                      cartão de crédito
+                      <input type="radio" name="paymentWay" id="credit" />
+                    </label>
+                    <label htmlFor="debit">
+                      <span>
+                        <Bank size={16}></Bank>
+                      </span>
+                      cartão de débito
+                      <input type="radio" name="paymentWay" id="debit" />
+                    </label>
+                    <label htmlFor="money">
+                      <span>
+                        <Money size={16}></Money>
+                      </span>
+                      dinheiro
+                      <input type="radio" name="paymentWay" id="money" />
+                    </label>
+                  </div>
+                )
+              }}
+            />
           </DivPaymentWay>
         </div>
         <div>

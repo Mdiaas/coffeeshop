@@ -10,6 +10,17 @@ export interface CartItem {
   amount: number
 }
 
+interface AddressInfo {
+  cep: string
+  street: string
+  number: string
+  complement: string
+  district: string
+  city: string
+  uf: string
+  paymentType: string
+}
+
 interface CartContextType {
   cart: CartItem[]
   deliveryPrice: number
@@ -17,6 +28,7 @@ interface CartContextType {
   subCoffee: (id: number) => void
   removeCoffee: (id: number) => void
   totalOrder: () => number
+  onFormFullfilled: (data: AddressInfo) => void
 }
 
 interface CartContextProviderProps {
@@ -27,6 +39,7 @@ export const CartContext = createContext({} as CartContextType)
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
   const [coffeesInCart, setCoffeesInCart] = useState<CartItem[]>([])
+  const [addressInfo, setAddressInfo] = useState<AddressInfo | undefined>()
   const deliveryPrice = 3.5
   function addCoffeeInCart(coffee: CartItem) {
     const orderAlreadyInCart = coffeesInCart.findIndex((coffeeInCart) => {
@@ -101,6 +114,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         removeCoffee: removeCoffeeFromCart,
         totalOrder: getTotalOrder,
         deliveryPrice,
+        onFormFullfilled: setAddressInfo,
       }}
     >
       {children}

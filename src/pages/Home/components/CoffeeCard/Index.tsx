@@ -49,7 +49,7 @@ export function CoffeeCard({
 
   return (
     <CoffeeCardContainer>
-      <img src="src\assets\coffees\coffee1.png" alt="" />
+      <img src={`src/assets/coffees/${imageUrl}`} alt="" />
       <span>TRADICIONAL</span>
       <h3>{name}</h3>
       <p>{description}</p>
@@ -57,7 +57,7 @@ export function CoffeeCard({
       <footer>
         <span>
           R$
-          <strong>{value}</strong>
+          <strong>{value.toFixed(2).padEnd(0)}</strong>
         </span>
         <div>
           <button onClick={handleSubtractItem}>
