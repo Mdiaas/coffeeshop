@@ -1,6 +1,7 @@
 import { Bank, CreditCard, MapPin, Money } from 'phosphor-react'
 import { useContext } from 'react'
 import { useForm, Controller } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { CartContext } from '../../contexts/CartContext'
 import { ItemCart } from './components/CartItem'
 import {
@@ -20,9 +21,11 @@ export function Payment() {
   const totalWithDelivery = total + deliveryPrice
 
   const { register, handleSubmit, control, reset, watch } = useForm()
-
+  const navigate = useNavigate()
   function handleAddAddress(data: any) {
-    console.log(data)
+    onFormFullfilled(data)
+    reset()
+    navigate('/successPage')
   }
   return (
     <MainContainer>
@@ -38,10 +41,20 @@ export function Payment() {
             </h3>
             <p>Informe o endereço onde deseja receber seu pedido</p>
             <DivInput variantWidth="50%">
-              <input type="text" placeholder="CEP" {...register('cep')} />
+              <input
+                type="text"
+                placeholder="CEP"
+                {...register('cep')}
+                required
+              />
             </DivInput>
             <DivInput variantWidth="100%">
-              <input type="text" placeholder="Rua" {...register('street')} />
+              <input
+                type="text"
+                placeholder="Rua"
+                {...register('street')}
+                required
+              />
             </DivInput>
             <DivRow>
               <DivInput variantWidth="25%">
@@ -49,6 +62,7 @@ export function Payment() {
                   type="number"
                   placeholder="Número"
                   {...register('number')}
+                  required
                 />
               </DivInput>
               <DivInput variantWidth="75%">
@@ -56,6 +70,7 @@ export function Payment() {
                   type="text"
                   placeholder="Complemento"
                   {...register('complement')}
+                  required
                 />
               </DivInput>
             </DivRow>
@@ -65,13 +80,24 @@ export function Payment() {
                   type="text"
                   placeholder="Bairro"
                   {...register('district')}
+                  required
                 />
               </DivInput>
               <DivInput variantWidth="50%">
-                <input type="text" placeholder="Cidade" {...register('city')} />
+                <input
+                  type="text"
+                  placeholder="Cidade"
+                  {...register('city')}
+                  required
+                />
               </DivInput>
               <DivInput variantWidth="25%">
-                <input type="text" placeholder="UF" {...register('uf')} />
+                <input
+                  type="text"
+                  placeholder="UF"
+                  {...register('uf')}
+                  required
+                />
               </DivInput>
             </DivRow>
           </DivAddressContainer>

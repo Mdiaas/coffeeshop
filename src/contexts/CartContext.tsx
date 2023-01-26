@@ -29,6 +29,7 @@ interface CartContextType {
   removeCoffee: (id: number) => void
   totalOrder: () => number
   onFormFullfilled: (data: AddressInfo) => void
+  addressInfo: AddressInfo | undefined
 }
 
 interface CartContextProviderProps {
@@ -40,6 +41,7 @@ export const CartContext = createContext({} as CartContextType)
 export function CartContextProvider({ children }: CartContextProviderProps) {
   const [coffeesInCart, setCoffeesInCart] = useState<CartItem[]>([])
   const [addressInfo, setAddressInfo] = useState<AddressInfo | undefined>()
+
   const deliveryPrice = 3.5
   function addCoffeeInCart(coffee: CartItem) {
     const orderAlreadyInCart = coffeesInCart.findIndex((coffeeInCart) => {
@@ -115,6 +117,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         totalOrder: getTotalOrder,
         deliveryPrice,
         onFormFullfilled: setAddressInfo,
+        addressInfo,
       }}
     >
       {children}
