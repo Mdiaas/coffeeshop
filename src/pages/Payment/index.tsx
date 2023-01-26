@@ -70,7 +70,6 @@ export function Payment() {
                   type="text"
                   placeholder="Complemento"
                   {...register('complement')}
-                  required
                 />
               </DivInput>
             </DivRow>
